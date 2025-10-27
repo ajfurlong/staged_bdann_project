@@ -1,0 +1,21 @@
+Model: "feature_extractor"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_56 (InputLayer)       [(None, 5)]               0         
+                                                                 
+ fe_dense_0 (Dense)          (None, 10)                60        
+                                                                 
+ fe_dense_1 (Dense)          (None, 18)                198       
+                                                                 
+ fe_dense_2 (Dense)          (None, 26)                494       
+                                                                 
+ fe_dense_3 (Dense)          (None, 26)                702       
+                                                                 
+ feature_layer (Dense)       (None, 17)                459       
+                                                                 
+=================================================================
+Total params: 1913 (7.47 KB)
+Trainable params: 1913 (7.47 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________

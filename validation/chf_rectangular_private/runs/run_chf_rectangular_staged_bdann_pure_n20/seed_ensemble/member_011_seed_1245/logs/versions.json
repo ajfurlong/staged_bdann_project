@@ -1,0 +1,9 @@
+{
+  "python": "3.9.19 | packaged by conda-forge | (main, Mar 20 2024, 12:55:20)  [Clang 16.0.6 ]",
+  "platform": "macOS-15.7.1-arm64-arm-64bit",
+  "tensorflow": "2.15.0",
+  "tensorflow_probability": "0.23.0",
+  "numpy": "1.26.4",
+  "pandas": "2.2.2",
+  "h5py": "3.11.0"
+}

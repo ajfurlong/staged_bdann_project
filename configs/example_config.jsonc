@@ -1,0 +1,252 @@
+{
+  // Required. Used in directory naming, checkpoints, and reports.
+  "run_name": "example_bdann_run",
+
+  // Optional, int. Default: 1234. Global seed for reproducibility.
+  "seed": 1234,
+
+  "logging": {
+    // Optional, bool. Default: true. Save metrics summaries and config echoes.
+    "save_summaries": true,
+
+    // Optional, bool. Default: true. Save plots if your pipeline produces them.
+    "save_plots": true,
+
+    // Optional, nonnegative int. Default: 2. Controls console verbosity of your app.
+    "verbose": 2
+  },
+
+  "data": {
+    // Required, string. One of ["split","files"]. Controls how datasets are provided.
+    // "split": you provide a single CSV per domain, and the code splits using ratios in data.splits.
+    // "files": you provide explicit train/valid/test CSVs per domain, or one single_csv per domain.
+    "mode": "split",
+
+    "source": {
+      // If mode == "files": either provide the triad below, or a single_csv.
+      // If mode == "split": these are ignored.
+      // Paths are normalized to strings.
+      "train_csv": "data/source_train.csv",
+      "valid_csv": "data/source_valid.csv",
+      "test_csv":  "data/source_test.csv",
+
+      // Mutually exclusive with the triad above. If set, the code will rely on data.splits.source.
+      // Ignored if you also provide the triad. Set to null if unused.
+      "single_csv": "data/source_all.csv",
+
+      // Required, nonempty list of strings. Column names in CSV, order matters.
+      // Your pipeline permits source/target name mismatches and will warn when they differ.
+      "features": ["feat_0", "feat_1", "feat_2", "feat_3", "feat_4"],
+      "outputs": "output_0"
+    },
+
+    "target": {
+      // Same semantics as source.* above.
+      "train_csv": "data/target_train.csv",
+      "valid_csv": "data/target_valid.csv",
+      "test_csv":  "data/target_test.csv",
+
+      // Alternative to the triad when mode == "files".
+      "single_csv": "data/target_all.csv",
+
+      // Required, nonempty list of strings. Can differ from source.features. A warning will print.
+      "features": ["feat_0", "feat_1", "feat_2", "feat_3", "feat_4"],
+      "outputs":  "output_0"
+    },
+
+    "splits": {
+      // Lists of three nonnegative numbers that sum to 1.0: [train, valid, test]
+      // Used when mode == "split" or when a domain provides single_csv.
+      // Defaults: source [0.8,0.1,0.1], target [0.25,0.5,0.25]
+      "source": [0.8, 0.1, 0.1],
+      "target": [0.25, 0.5, 0.25]
+    },
+
+    "scaling": {
+      // Optional, bools. Defaults: both true. Standardize X and y with joint domain policy in your data loader.
+      "standardize_X": true,
+      "standardize_y": true
+    },
+
+    "noise_injection": {
+      // Optional. Default enabled false. Additive Gaussian-like noise factors at data prep time.
+      "enabled": false,
+
+      // Optional, nonnegative number. Default: 1e-4. Magnitude for source domain features/targets per your loader.
+      "source_factor": 1e-4,
+
+      // Optional, nonnegative number. Default: 5e-3. Magnitude for target domain.
+      "target_factor": 0.005
+    }
+  },
+
+  "stage1": {
+    // Required. "train" to fit Stage 1, "load" to use external saved weights for feature extractor and regression head.
+    "mode": "train",
+
+    // Required if mode == "load". Paths to pretrained weights. Null or omitted otherwise.
+    "extractor_weights": null,
+    "reg_head_weights": null,
+
+    // Positive ints. Defaults: epochs 150, batch_size 16.
+    "epochs": 150,
+    "batch_size": 16,
+
+    "optimizer": {
+      // Required, positive number. Learning rate for Stage 1.
+      "lr": 0.001,
+
+      // Optional, positive int. If provided with decay_rate, applies exponential step decay every N epochs.
+      "decay_every_epochs": 10,
+
+      // Optional, number in (0,1]. Multiplicative factor applied at each decay step.
+      "decay_rate": 0.96
+    },
+
+    "architecture": {
+      "feature_extractor": {
+        // Required, nonempty list of positive ints. Hidden layer widths for the deterministic extractor.
+        "layers": [64, 64, 32],
+
+        // Required, list of strings or nulls. One activation per layer. Example: ["relu", "relu", null].
+        "activations": ["relu", "relu", "relu"]
+      },
+      "reg_head": {
+        // Required, positive int. Output dimensionality. Single-variable regression uses 1.
+        "out_units": 1,
+
+        // Optional, string or null. Activation for output. Typically null for regression.
+        "activation": null
+      }
+    },
+
+    "early_stopping": {
+      // Optional. Defaults: enabled true, patience 50, min_delta 0.0, monitor "val_loss", mode "min", restore_best_weights true.
+      "enabled": true,
+      "patience": 50,
+      "min_delta": 0.0,
+      "monitor": "val_loss",
+      "mode": "min",
+      "restore_best_weights": true
+    }
+  },
+
+  "stage2": {
+    // Optional, bool. Default: true. If false, you can skip domain alignment.
+    "enabled": true,
+
+    // Positive ints. Defaults: epochs 50, batch_size 16.
+    "epochs": 50,
+    "batch_size": 16,
+
+    "optimizer": {
+      // Required, positive number. LR for Stage 2.
+      "lr": 0.00003,
+      "decay_every_epochs": 5,
+      "decay_rate": 0.96
+    },
+
+    // DANN lambda schedule. lambda(t) is usually ramped from lambda_min_frac*lambda_max to lambda_max.
+    // lambda_max must be nonnegative. lambda_min_frac in [0,1]. ramp_k nonnegative controls steepness.
+    "lambda_max": 1.0,
+    "lambda_min_frac": 0.05,
+    "ramp_k": 10.0,
+
+    // Nonnegative int. Warmup epochs during which lambda may be held small before full ramping.
+    "warmup_epochs": 5,
+
+    "domain_head": {
+      // Required. Nonempty list of positive ints for the domain classifier hidden widths.
+      "widths": [128, 64, 32],
+
+      // Optional, in [0,1]. Dropout on domain head.
+      "dropout": 0.25,
+
+      // Optional, nonnegative number. L2 weight for domain head.
+      "l2": 0.0001
+    },
+
+    "early_stopping": {
+      // Optional. Defaults: enabled false, patience 10, etc.
+      // Monitor can be the hybrid "dann_alignment" (more stable) or "domain_output_loss" (unstable).
+      "enabled": false,
+      "patience": 10,
+      "min_delta": 0.0,
+      "monitor": "dann_alignment",
+      "mode": "min",
+      "restore_best_weights": true
+    }
+  },
+
+  "stage3": {
+    // Positive ints. Defaults: epochs 400, batch_size 16.
+    "epochs": 400,
+    "batch_size": 16,
+
+    "optimizer": {
+      // Required, positive number. LR for Bayesian fine-tuning.
+      "lr": 0.0023,
+      "decay_every_epochs": 10,
+      "decay_rate": 0.96
+    },
+
+    // Nonnegative number. Maximum KL weight applied by your KL scheduler for Bayesian layers.
+    "kl_weight_max": 0.11,
+
+    // Optional, bool. Default: false. If true, suppress Bayesian layers, producing a deterministic Stage 3.
+    "fully_deterministic": false,
+
+    "freeze": {
+      // Required int if provided. Index into the merged model’s layers that controls unfreezing policy.
+      // Negative values count from the end. Example: -7 unfreezes the last 7 layers.
+      "unfreeze_from_layer_idx": -7
+    },
+
+    "bayesian_policy": {
+      // Required list of ints. Indices of layers that should be Bayesian. Policy is enforced downstream.
+      "by_index": [-2, -1],
+
+      // Optional, bool. Default: true. Enforce that Bayesian layers are downstream of a specific cut point.
+      "must_be_downstream": true
+    },
+
+    "architecture": {
+      // If omitted, defaults to stage1.architecture. You can override to change widths or activations for Stage 3.
+      // Practically, these should be the same as the Stage 1 definitions.
+      "feature_extractor": {
+        "layers": [64, 64, 32],
+        "activations": ["relu", "relu", "relu"]
+      },
+
+      // If fully_deterministic is true, defaults to 1 unit and linear activation; if false (Bayesian), 2 units and linear activation.
+      "reg_head": {
+        "out_units": 2,
+        "activation": null
+      }
+    },
+
+    "early_stopping": {
+      // NO-OP in this version, val_loss outputs KL weighted loss instead of true BCE loss
+      "enabled": false,
+      "patience": 50,
+      "min_delta": 0.0,
+      "monitor": "val_loss",
+      "mode": "min",
+      "restore_best_weights": true
+    }
+  },
+
+  "metrics": {
+    // Positive number. Default: 1e-8. Masking threshold for percentage metrics on small |y|.
+    "ape_epsilon": 1e-8,
+
+    // Positive int. Default: 200. Monte Carlo forward passes at test time for BNN predictive stats.
+    "mc_samples_test": 200
+  },
+
+  "outfiles": {
+    // Optional, bools. Defaults: both true. Control HDF5 model and scaler metadata persistence.
+    "save_hdf5_model": true,
+    "save_metadata_h5": true
+  }
+}

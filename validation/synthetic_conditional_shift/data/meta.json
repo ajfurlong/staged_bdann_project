@@ -1,0 +1,42 @@
+{
+  "seed": 1234,
+  "source_sizes": {
+    "train": 5000,
+    "val": 1000,
+    "test": 1000,
+    "total": 7000
+  },
+  "target_sizes": {
+    "total": 1000,
+    "val": 250,
+    "test": 250,
+    "pool_after_val_test": 500,
+    "train_subset": 500
+  },
+  "scaling": {
+    "mode": "global_quantile",
+    "range": [
+      1.0,
+      5.0
+    ],
+    "q_low": 0.05,
+    "q_high": 0.95,
+    "soft_k": 2.0
+  },
+  "columns": {
+    "features": [
+      "feat_0",
+      "feat_1",
+      "feat_2",
+      "feat_3",
+      "feat_4"
+    ],
+    "target": "target",
+    "domain": "domain"
+  },
+  "notes": [
+    "Five features in (1.0, 3.0); deterministic latent functions with small Gaussian noise on targets.",
+    "Target_train_500 is sampled from target_train_pool with a fixed RNG seed for reproducibility.",
+    "Domain: 0=source, 1=target."
+  ]
+}

@@ -1,0 +1,55 @@
+Staged B-DANN Test Battery Summary
+=================================
+
+This test suite validates functional correctness and integration across the staged Bayesian
+Domain-Adversarial Neural Network (B-DANN) pipeline. All tests are designed for lightweight,
+CPU-friendly verification.
+
+------------------------------------------------------------------
+Core Unit Tests
+------------------------------------------------------------------
+
+1. test_config_validation.py
+   - Validates configuration parsing and error handling.
+   - Ensures JSON configs load properly and reject invalid structures.
+
+2. test_data_loader.py
+   - Verifies data ingestion, splitting, and standardization.
+   - Confirms correct labeling of source (0) and target (1) domains.
+
+3. test_batching.py
+   - Checks balanced batch generation for Stage 2.
+   - Ensures half source and half target composition with correct weighting.
+
+4. test_models.py
+   - Confirms model component shapes and GRL gradient correctness.
+   - Validates custom Gradient Reversal Layer backward behavior.
+
+5. test_callbacks.py
+   - Tests LambdaScheduler (for GRL lambda ramping) and KLWeightScheduler.
+   - Ensures correct annealing and per-sample scaling of KL weight.
+
+6. test_common.py
+   - Validates Normal softplus distribution and safe NLL computation for Stage 3.
+   - Prevents silent dtype or shape mismatches.
+
+7. test_plotting.py
+   - Checks parity plot and histogram generation.
+   - Confirms successful plot file creation (no matplotlib errors).
+
+------------------------------------------------------------------
+Integration & Smoke Tests
+------------------------------------------------------------------
+
+8. test_stage1_smoke.py
+   - Runs the full Stage 1→2→3 pipeline once.
+   - Ensures metrics dictionary and loss curves are produced.
+
+9. test_stage3_smoke.py  (marked @pytest.mark.slow)
+   - Executes Bayesian fine-tuning path with uncertainty outputs enabled.
+   - Confirms UQ metrics and model checkpoint generation.
+
+------------------------------------------------------------------
+Usage
+------------------------------------------------------------------
+- Run above the test/ directory: pytest -q

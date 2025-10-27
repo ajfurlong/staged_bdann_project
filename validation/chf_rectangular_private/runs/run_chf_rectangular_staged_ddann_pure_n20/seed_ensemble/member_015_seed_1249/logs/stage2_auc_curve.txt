@@ -1,0 +1,21 @@
+# per-epoch AUC for domain classifier (higher means more separability)
+epoch=1, train_auc=0.918045, val_auc=0.900381
+epoch=2, train_auc=0.920754, val_auc=0.907943
+epoch=3, train_auc=0.921089, val_auc=0.904733
+epoch=4, train_auc=0.925443, val_auc=0.902884
+epoch=5, train_auc=0.932404, val_auc=0.919151
+epoch=6, train_auc=0.941324, val_auc=0.930604
+epoch=7, train_auc=0.939932, val_auc=0.933868
+epoch=8, train_auc=0.944052, val_auc=0.942492
+epoch=9, train_auc=0.946060, val_auc=0.952176
+epoch=10, train_auc=0.953865, val_auc=0.957889
+epoch=11, train_auc=0.954911, val_auc=0.960664
+epoch=12, train_auc=0.959263, val_auc=0.965560
+epoch=13, train_auc=0.954361, val_auc=0.966268
+epoch=14, train_auc=0.962165, val_auc=0.970620
+epoch=15, train_auc=0.753432, val_auc=0.756610
+epoch=16, train_auc=0.595868, val_auc=0.600626
+epoch=17, train_auc=0.605508, val_auc=0.614635
+epoch=18, train_auc=0.525911, val_auc=0.489227
+epoch=19, train_auc=0.510793, val_auc=0.467329
+epoch=20, train_auc=0.589958, val_auc=0.595457

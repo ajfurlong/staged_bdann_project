@@ -1,0 +1,207 @@
+{
+  "run_name": "synthetic_conditional_shift",
+  "seed": 1234,
+  "logging": {
+    "save_summaries": true,
+    "save_plots": true,
+    "verbose": 2
+  },
+  "data": {
+    "mode": "files",
+    "source": {
+      "train_csv": "data/source_train.csv",
+      "valid_csv": "data/source_val.csv",
+      "test_csv": "data/source_test.csv",
+      "features": [
+        "feat_0",
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4"
+      ],
+      "outputs": [
+        "target"
+      ],
+      "single_csv": null
+    },
+    "target": {
+      "train_csv": "data/target_train_500.csv",
+      "valid_csv": "data/target_val.csv",
+      "test_csv": "data/target_test.csv",
+      "features": [
+        "feat_0",
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4"
+      ],
+      "outputs": [
+        "target"
+      ],
+      "single_csv": null
+    },
+    "scaling": {
+      "standardize_X": true,
+      "standardize_y": true
+    },
+    "noise_injection": {
+      "enabled": false,
+      "source_factor": 0.0001,
+      "target_factor": 0.005
+    },
+    "splits": {
+      "source": [
+        0.8,
+        0.1,
+        0.1
+      ],
+      "target": [
+        0.25,
+        0.5,
+        0.25
+      ]
+    }
+  },
+  "stage1": {
+    "mode": "train",
+    "epochs": 400,
+    "batch_size": 32,
+    "optimizer": {
+      "lr": 0.001,
+      "decay_every_epochs": 10,
+      "decay_rate": 0.96
+    },
+    "architecture": {
+      "feature_extractor": {
+        "layers": [
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "activations": [
+          "relu",
+          "relu",
+          "relu",
+          "relu",
+          "relu"
+        ]
+      },
+      "reg_head": {
+        "out_units": 1,
+        "activation": null
+      }
+    },
+    "early_stopping": {
+      "enabled": true,
+      "patience": 20,
+      "min_delta": 0.0,
+      "monitor": "val_loss",
+      "mode": "min",
+      "restore_best_weights": true
+    },
+    "extractor_weights": null,
+    "reg_head_weights": null
+  },
+  "stage2": {
+    "enabled": true,
+    "epochs": 50,
+    "batch_size": 32,
+    "warmup_epochs": 15,
+    "optimizer": {
+      "lr": 0.0001322,
+      "decay_every_epochs": 5,
+      "decay_rate": 0.96
+    },
+    "lambda_max": 1.984,
+    "lambda_min_frac": 0.181,
+    "ramp_k": 16.5,
+    "domain_head": {
+      "dropout": 0.0,
+      "widths": [
+        64,
+        224,
+        192,
+        64
+      ],
+      "l2": 0.000226
+    },
+    "early_stopping": {
+      "enabled": false,
+      "patience": 10,
+      "min_delta": 0.0,
+      "monitor": "dann_alignment",
+      "mode": "min",
+      "restore_best_weights": true
+    }
+  },
+  "stage3": {
+    "fully_deterministic": false,
+    "epochs": 400,
+    "batch_size": 16,
+    "optimizer": {
+      "lr": 0.004,
+      "decay_every_epochs": 10,
+      "decay_rate": 0.96
+    },
+    "kl_weight_max": 0.2385,
+    "freeze": {
+      "unfreeze_from_layer_idx": -6
+    },
+    "bayesian_policy": {
+      "by_index": [
+        -5,
+        -4,
+        -3,
+        -2,
+        -1
+      ],
+      "must_be_downstream": true
+    },
+    "architecture": {
+      "feature_extractor": {
+        "layers": [
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "activations": [
+          "relu",
+          "relu",
+          "relu",
+          "relu",
+          "relu"
+        ]
+      },
+      "reg_head": {
+        "out_units": 2,
+        "activation": null
+      }
+    },
+    "early_stopping": {
+      "enabled": false,
+      "patience": 200,
+      "min_delta": 0.0,
+      "monitor": "val_loss",
+      "mode": "min",
+      "restore_best_weights": true
+    }
+  },
+  "seed_ensemble": {
+    "enabled": false,
+    "n": 20,
+    "base_seed": 1234,
+    "step": 1
+  },
+  "metrics": {
+    "ape_epsilon": 1e-08,
+    "mc_samples_test": 200
+  },
+  "outfiles": {
+    "save_hdf5_model": true,
+    "save_metadata_h5": true
+  }
+}

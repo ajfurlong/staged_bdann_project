@@ -1,0 +1,26 @@
+                                 Values
+R2                             0.992032
+[APE] MAPE                     1.467670
+[APE] Max APE                 14.943708
+[APE] Min APE                  0.002551
+[APE] STD APE                  1.435778
+[APE] rRMSE (%)                2.053172
+[APE] Ferr > 10% (%)           0.300000
+[APE] Ferr > 25% (%)           0.000000
+[AE] MAE                       0.042600
+[AE] MedAE                     0.033533
+[AE] Max AE                    0.424013
+[AE] Min AE                    0.000099
+[AE] STD AE                    0.037739
+[INFO] Stage 1 Time (s)      213.000000
+[INFO] Stage 2 Time (s)        0.000000
+[INFO] Stage 3 Time (s)        0.000000
+[INFO] Total Train Time (s)  213.000000
+[INFO] Inference Time (s)      0.000000
+[INFO] APE masked count        0.000000
+[DATA] Source Train (#)     5000.000000
+[DATA] Source Valid (#)     1000.000000
+[DATA] Source Test (#)      1000.000000
+[DATA] Target Train (#)      500.000000
+[DATA] Target Valid (#)      250.000000
+[DATA] Target Test (#)       250.000000
