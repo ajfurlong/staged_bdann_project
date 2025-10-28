@@ -1,2 +1,0 @@
-Best member by rRMSE: seed=1236, index=2
-rRMSE (%): 7.429002

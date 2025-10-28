@@ -1,0 +1,52 @@
+# Global ignores
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+
+# Training artifacts and large data
+*.h5
+*.hdf5
+*.ckpt
+*.joblib
+*.pkl
+*.npy
+*.npz
+*.csv
+runs*/
+outputs*/
+checkpoints*/
+logs*/
+
+# Ignore everything in this directory
+validation/synthetic_conditional_shift/**
+
+# Protect (keep) these specific files
+!validation/synthetic_conditional_shift/data/generate_synthetic_conditional_shift.py
+!validation/synthetic_conditional_shift/data/meta.json
+!validation/synthetic_conditional_shift/stage3_final_metrics.csv
+!validation/synthetic_conditional_shift/config_staged_bdann_synthetic_conditional_shift.json
+
+# Ensure the data/ directory itself is included so the kept files can exist
+!validation/synthetic_conditional_shift/data/
+
+# Ignore any file or folder with _private in its name
+*_private*
+
+# Explicitly ignore predictions and run outputs anywhere
+**/seed_ensemble/**
+**/plots/**
+**/metrics/**
+**/figures/**
+**/weights/**
+
+# If you keep a small, shareable sample dataset:
+# !validation/**/sample_data/**
+
+# IDE, env, build
+.vscode/
+.idea/
+.venv/
+env/
+venv/
+*.egg-info/

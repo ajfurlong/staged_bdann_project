@@ -1,3 +1,0 @@
-Miscalibration area (alea): 5.993819e-02
-Miscalibration area (epi): 1.143918e-01
-Miscalibration area (total): 3.768300e-02
