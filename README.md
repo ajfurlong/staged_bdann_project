@@ -8,7 +8,7 @@ The Staged B-DANN[^fn1] is a supervised transfer learning framework designed to 
 
 Since the Stage 3 model is a full or partial BNN, it is capable of quantifying both _aleatoric_ (due to data) and _epistemic_ (due to model optimization) uncertainties, which are important when deploying in sensitive applications. For stable and reliable uncertainty estimates, it is recommended to have at least two Bayesian layers at the end of the Stage 3 model's architecture[^fn3]. To assist in ascertaining the quality of uncertainty estimates, calibration and uncertainty distribution metrics/plots are generated.
 
-![Staged B-DANN Workflow]([http://url/to/img.png](https://github.com/ajfurlong/staged_bdann_project/blob/main/docs/b-dann_3stage_workflow_rounded.pdf))
+![alt text](https://github.com/ajfurlong/staged_bdann_project/blob/main/docs/b-dann_3stage_workflow_rounded.pdf "Staged B-DANN Workflow")
 
 This script is designed to be a dynamic toolbox for applying the Staged B-DANN framework to fit the needs of the study. Here are some of the currently active features to choose from:
 
