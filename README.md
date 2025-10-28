@@ -1,4 +1,5 @@
-***Staged Bayesian Domain Adversarial Neural Network (B-DANN)***
+Staged Bayesian Domain Adversarial Neural Network (Staged B-DANN)
+====================
 
 The Staged B-DANN[^fn1] is a supervised transfer learning framework designed to add control on _what_ information is transferred from the source domain to the target domain/task, and to add uncertainty quantification (UQ) capabilities. This method emphasizes finding _domain invariant_ features (shared latent representations) between domains, focusing only on transfering information that applies to both. While initially inspired by the DANN-R[^fn2], a single-stage joint-optimization semi-supervised technique designed to predict both source and target tasks, the Staged B-DANN capitalizes on having labeled data to improve target-specific performance and training stability via serial single-optimization (the original DANN was _very_ sensitive to hyperparameters and training instabilities). It is arranged in three primary stages:
 
