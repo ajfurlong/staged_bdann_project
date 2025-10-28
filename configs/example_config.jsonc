@@ -16,6 +16,19 @@
     "verbose": 2
   },
 
+  "seed_ensemble": {
+    // Optional, runs a model configuration n times varying the random seed (for stability analysis)
+    // This will produce aggregated results at the end of training providing mean metrics w/ SDs
+    "enabled": false,
+
+    // Number of models to train
+    "n": 20,
+    "base_seed": 1234,
+
+    // How many seeds to jump over when incrementing up
+    "step": 1
+  },
+
   "data": {
     // Required, string. One of ["split","files"]. Controls how datasets are provided.
     // "split": you provide a single CSV per domain, and the code splits using ratios in data.splits.
