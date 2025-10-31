@@ -29,7 +29,7 @@ Future additions:
 * Automated hyperparameter tuning
 * Support for non-csv data file types such as HDF5
 
-[^fn1]: Furlong, A., Salko, R., & Zhao, X., & Wu, X. (2025). A Three-Stage Bayesian Transfer Learning Framework to Improve Predictions in Data-Scarce Domains.
+[^fn1]: Furlong, A., Salko, R., & Zhao, X., & Wu, X. (2025). A Three-Stage Bayesian Transfer Learning Framework to Improve Predictions in Data-Scarce Domains. arXiv preprint arXiv:2510.26541
 [^fn2]: Farahani, H. S., Fatehi, A., Nadali, A., & Shoorehdeli, M. A. (2021). Domain Adversarial Neural Network Regression to design transferable soft sensor in a power plant. Computers in Industry, 132, 103489.
 [^fn3]: Zeng, J., Lesnikowski, A., & Alvarez, J. M. (2018). The relevance of Bayesian layer positioning to model uncertainty in deep Bayesian active learning. arXiv preprint arXiv:1811.12535.
 
